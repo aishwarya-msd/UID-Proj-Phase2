@@ -1,0 +1,115 @@
+* {
+  box-sizing: border-box;
+  margin: 0; padding: 0;
+  font-family: Arial, sans-serif;
+}
+body {
+  background: #f0f0f0;
+  color: #222;
+  transition: background 0.3s, color 0.3s;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+.dark {
+  background: #121212;
+  color: #eee;
+}
+header {
+  background: #df4236;
+  color: white;
+  padding: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+}
+header h1 {
+  margin-bottom: 0.5rem;
+}
+.controls {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+input[type="text"], select, button {
+  padding: 0.5rem;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+button {
+  cursor: pointer;
+  background: whitesmoke;
+  color: white;
+  transition: background 0.2s;
+}
+button:hover {
+  background: white;
+}
+#movie-list {
+  padding: 1rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fill,minmax(250px,1fr));
+  gap: 1rem;
+  flex-grow: 1;
+}
+.movie-card {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgb(0 0 0 / 0.1);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: background 0.3s, color 0.3s;
+}
+.dark .movie-card {
+  background: #1e1e1e;
+  color: #eee;
+}
+.movie-poster {
+  width: 100%;
+  height: 370px;
+  object-fit: cover;
+}
+.movie-info {
+  padding: 1rem;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.movie-info h3 {
+  margin-bottom: 0.5rem;
+}
+.movie-info p {
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+  flex-grow: 1;
+}
+.movie-actions {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+}
+.movie-actions button {
+  background: #df4236;
+  color: white;
+  border-radius: 4px;
+  padding: 0.4rem 0.7rem;
+  font-size: 0.9rem;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.movie-actions button:hover {
+  background: #df4236;
+}
+
+footer {
+  background: #4f6f8b;
+  color: white;
+  text-align: center;
+  padding: 1rem;
+}
