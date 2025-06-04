@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="wparty2.css">
+</head>
+<body>
+    <div class="watch-party-container">
+  <video id="moviePlayer" width="1000"height="500"controls></video>
+  <div class="controls">
+    <button id="playPauseBtn">Play</button>
+    <button id="seekBackwardBtn">&lt;&lt;</button>
+    <input type="range" id="progressBar" value="0" step="0.01">
+    <button id="seekForwardBtn">&gt;&gt;</button>
+    <span id="currentTime">0:00</span> / <span id="duration">0:00</span>
+  </div>
+  <div id="chatArea">
+    </div>
+  <input type="text" id="messageInput" placeholder="Type your message...">
+  <button id="sendBtn">Send</button>
+  <div id="participantList">
+    </div>
+</div>
+<script src="wparty2.js"></script></body>
+</html>
