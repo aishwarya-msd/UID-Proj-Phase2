@@ -120,15 +120,6 @@ footer {
   text-align: center;
   padding: 1rem;
 }
-.drawer-btn {
-  font-size: 28px;
-  cursor: pointer;
-  user-select: none;
-  margin-left: 20px;
-  line-height: 80px;
-}
-
-/* === Drawer Panel === */
 
 .drawer-btn {
   font-size: 28px;
@@ -140,9 +131,6 @@ footer {
   z-index: 1100;
   position: relative;
 }
-
-
-
 
 .drawer {
   position: fixed;
@@ -185,5 +173,4 @@ footer {
   height: 60px;           
   width: auto;
   object-fit: contain;
-  animation: glow 2s ease-in-out infinite;
 }
