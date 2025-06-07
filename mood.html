@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Movie Hub</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <style>
+    :root {
+      --primary-color: #3498db;
+      --secondary-color: #2c3e50;
+      --text-color: #ffffff;
+      --sidebar-bg: #3498db;
+      --sidebar-hover: #2980b9;
+      --sidebar-width: 210px;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: var(--secondary-color);
+      color: var(--text-color);
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      transition: background 0.3s, color 0.3s;
+      display: flex;
+    }
+
+    /* Sidebar styles */
+    .sidebar {
+      width: var(--sidebar-width);
+      background: var(--sidebar-bg);
+      height: 100vh;
+      position: fixed;
+      top: 0;
+      left: 0;
+      display: flex;
+      flex-direction: column;
+      padding-top: 32px;
+      z-index: 100;
+      box-shadow: 2px 0 8px rgba(0,0,0,0.07);
+    }
+    .sidebar a {
+      color: #fff;
+      text-decoration: none;
+      font-size: 1.1rem;
+      padding: 16px 28px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      transition: background 0.2s;
+      border: none;
+      background: none;
+      outline: none;
+    }
+    .sidebar a:hover,
+    .sidebar a.active {
+      background: var(--sidebar-hover);
+    }
+
+    /* Main content area */
+    .main-content {
+      margin-left: var(--sidebar-width);
+      width: calc(100% - var(--sidebar-width));
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Header styles */
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 24px;
+      background: var(--primary-color);
+      color: var(--text-color);
+    }
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .logo img {
+      height: 42px;
+      vertical-align: middle;
+    }
+    h1 {
+      margin: 0 0 0 12px;
+      font-size: 1.7rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+    .controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-left: auto;
+    }
+    .controls input[type="text"],
+    .controls select {
+      padding: 6px 10px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+    }
+    .controls button {
+      padding: 6px 12px;
+      border-radius: 4px;
+      border: none;
+      background: #fff;
+      color: #222;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background 0.2s;
+    }
+    .controls button:hover {
+      background: #eee;
+    }
+
+    /* Mood selector */
+    .mood-selector {
+      display: flex;
+      gap: 1rem;
+      margin: 1.2rem 0 0 0;
+      justify-content: center;
+    }
+    .mood-btn {
+      padding: 0.5rem 1.1rem;
+      border: none;
+      border-radius: 20px;
+      cursor: pointer;
+      background-color: var(--primary-color);
+      color: white;
+      font-size: 1rem;
+      transition: transform 0.2s, background 0.2s;
+    }
+    .mood-btn:hover {
+      transform: scale(1.05);
+      background-color: #222;
+    }
+
+    /* Movie list placeholder */
+    #movie-list {
+      padding: 2rem;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 18px;
+      background: var(--primary-color);
+      color: var(--text-color);
+      margin-top: auto;
+      letter-spacing: 1px;
+    }
+
+    /* Dark mode */
+    body.dark {
+      --primary-color: #23272f;
+      --secondary-color: #111418;
+      --text-color: #f1f1f1;
+      --sidebar-bg: #23272f;
+      --sidebar-hover: #1a1d22;
+      background: var(--secondary-color);
+      color: var(--text-color);
+    }
+    body.dark header,
+    body.dark footer {
+      background: var(--primary-color);
+      color: var(--text-color);
+    }
+    body.dark .controls button {
+      background: #222;
+      color: #fff;
+    }
+    body.dark .controls button:hover {
+      background: #444;
+    }
+    body.dark .mood-btn {
+      background: #444;
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .sidebar {
+        width: 56px;
+        padding-top: 12px;
+      }
+      .sidebar a span {
+        display: none;
+      }
+      .main-content {
+        margin-left: 56px;
+        width: calc(100% - 56px);
+      }
+      h1 {
+        font-size: 1.2rem;
+      }
+    }
+    @media (max-width: 600px) {
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+      }
+      .controls {
+        width: 100%;
+        justify-content: flex-end;
+        margin-left: 0;
+      }
+      .header-left {
+        width: 100%;
+        justify-content: flex-start;
+      }
+      .sidebar {
+        position: fixed;
+        height: 60px;
+        width: 100vw;
+        left: 0;
+        top: auto;
+        bottom: 0;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-around;
+        z-index: 200;
+        box-shadow: 0 -2px 8px rgba(0,0,0,0.07);
+      }
+      .sidebar a {
+        padding: 8px 10px;
+        justify-content: center;
+        font-size: 1.3rem;
+      }
+      .main-content {
+        margin-left: 0;
+        margin-bottom: 60px;
+        width: 100vw;
+      }
+      .mood-selector {
+        flex-wrap: wrap;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Sidebar Navigation -->
+  <nav class="sidebar">
+    <a href="movie1.html" class="active"><i class="fas fa-home"></i><span>Home</span></a>
+    <a href="#"><i class="fas fa-film"></i><span>Genres</span></a>
+    <a href="mood.html"><i class="fas fa-theater-masks"></i><span>Thematise</span></a>
+    <a href="wparty2.html" target="_blank"><i class="fas fa-users"></i><span>WatchParty</span></a>
+    <a href="#"><i class="fa-solid fa-heart"></i><span>Favorites</span></a>
+    <a href="#"><i class="fas fa-sign-in-alt"></i><span>Login</span></a>
+  </nav>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <header>
+      <div class="header-left">
+        <div class="logo">
+          <img src="cinesphere_new.png" alt="Logo" />
+        </div>
+        <h1>Cinesphere</h1>
+      </div>
+      <div class="controls">
+        <input type="text" id="search" placeholder="Search movies..." />
+        <button id="search-btn" style="color: black;">Search</button>
+        <button id="toggle-theme" style="color: black;">🌗 Dark/Light</button>
+        <select id="language-select">
+          <option value="">All Languages</option>
+          <option value="English">English</option>
+          <option value="Hindi">Hindi</option>
+          <option value="Telugu">Telugu</option>
+          <option value="Spanish">Spanish</option>
+        </select>
+      </div>
+    </header>
+
+    <div class="mood-selector">
+      <button class="mood-btn" data-mood="happy">😊 Happy</button>
+      <button class="mood-btn" data-mood="drama">😢 Drama</button>
+      <button class="mood-btn" data-mood="action">🤩 Action</button>
+      <button class="mood-btn" data-mood="romance">🥰 Romance</button>
+    </div>
+
+    <section id="movie-list">
+      <!-- Movie cards will go here -->
+    </section>
+    <footer>
+      <p>© 2025 CINESHPHERE</p>
+    </footer>
+  </div>
+
+  <script>
+const API_KEY = '8ff0a9d8';
+    const movieList = document.getElementById('movie-list');
+    const searchInput = document.getElementById('search');
+    const searchBtn = document.getElementById('search-btn');
+    const toggleThemeBtn = document.getElementById('toggle-theme');
+    const languageSelect = document.getElementById('language-select');
+
+    let darkMode = false;
+    let currentLanguage = '';
+
+    // Mood color assignments
+    const moodThemes = {
+      happy: {
+        '--primary-color': '#f1c40f',
+        '--secondary-color': '#2ecc71',
+        '--sidebar-bg': '#f1c40f',
+        '--sidebar-hover': '#e1b70d',
+        '--text-color': '#222'
+      },
+      drama: {
+        '--primary-color': '#3498db',
+        '--secondary-color': '#2c3e50',
+        '--sidebar-bg': '#3498db',
+        '--sidebar-hover': '#217dbb',
+        '--text-color': '#fff'
+      },
+      action: {
+        '--primary-color': '#e74c3c',
+        '--secondary-color': '#f39c12',
+        '--sidebar-bg': '#e74c3c',
+        '--sidebar-hover': '#c0392b',
+        '--text-color': '#fff'
+      },
+      romance: {
+        '--primary-color': '#e84393',
+        '--secondary-color': '#fd79a8',
+        '--sidebar-bg': '#e84393',
+        '--sidebar-hover': '#d63072',
+        '--text-color': '#fff'
+      }
+    };
+
+    // Mood button click handler
+    document.querySelectorAll('.mood-btn').forEach(button => {
+      button.addEventListener('click', () => {
+        const mood = button.dataset.mood;
+        applyTheme(mood);
+        searchInput.value = button.dataset.search;
+        searchBtn.click();
+        document.body.classList.remove('dark');
+      });
+    });
+
+    function applyTheme(mood) {
+      const theme = moodThemes[mood] || moodThemes.happy;
+      for (const variable in theme) {
+        document.documentElement.style.setProperty(variable, theme[variable]);
+      }
+      document.body.style.backgroundColor = theme['--secondary-color'];
+      document.body.style.color = theme['--text-color'];
+    }
+
+    // Theme toggle
+    function toggleTheme() {
+      darkMode = !darkMode;
+      document.body.classList.toggle('dark', darkMode);
+      if (darkMode) {
+        document.documentElement.style.removeProperty('--primary-color');
+        document.documentElement.style.removeProperty('--secondary-color');
+        document.documentElement.style.removeProperty('--sidebar-bg');
+        document.documentElement.style.removeProperty('--sidebar-hover');
+        document.documentElement.style.removeProperty('--text-color');
+      }
+    }
+    toggleThemeBtn.addEventListener('click', toggleTheme);
+
+    // Language filter
+    languageSelect.addEventListener('change', () => {
+      currentLanguage = languageSelect.value;
+      if (searchInput.value.trim() !== '') {
+        searchMovies(searchInput.value.trim());
+      }
+    });
+
+    // Search functionality
+    searchBtn.addEventListener('click', () => {
+      const query = searchInput.value.trim();
+      if (query.length === 0) {
+        alert('Please enter a movie name.');
+        return;
+      }
+      searchMovies(query);
+    });
+
+    searchInput.addEventListener('keyup', (e) => {
+      if (e.key === 'Enter') searchBtn.click();
+    });
+
+    async function searchMovies(query) {
+      movieList.innerHTML = '<p>Loading...</p>';
+      try {
+        const res = await fetch(`https://www.omdbapi.com/?apikey=${API_KEY}&s=${encodeURIComponent(query)}`);
+        const data = await res.json();
+
+        if (data.Response === "False") {
+          movieList.innerHTML = `<p>${data.Error}</p>`;
+          return;
+        }
+
+        let movies = data.Search;
+        if (currentLanguage) {
+          movies = await filterByLanguage(movies, currentLanguage);
+        }
+
+        renderMovies(movies);
+      } catch (error) {
+        movieList.innerHTML = '<p>Error fetching data.</p>';
+        console.error(error);
+      }
+    }
+
+    async function filterByLanguage(movies, language) {
+      const detailedMovies = [];
+      for (const movie of movies) {
+        const res = await fetch(`https://www.omdbapi.com/?apikey=${API_KEY}&i=${movie.imdbID}`);
+        const details = await res.json();
+        if (details.Language?.toLowerCase().includes(language.toLowerCase())) {
+          detailedMovies.push(details);
+        }
+      }
+      return detailedMovies;
+    }
+
+    function renderMovies(movies) {
+      movieList.innerHTML = movies.length ? '' : '<p>No movies found</p>';
+      movies.forEach(movie => {
+        const card = document.createElement('div');
+        card.className = 'movie-card';
+        card.innerHTML = `
+          <img class="movie-poster" src="${movie.Poster !== 'N/A' ? movie.Poster : 'https://via.placeholder.com/300x450?text=No+Image'}" alt="${movie.Title} Poster">
+          <div class="movie-info">
+            <h3>${movie.Title} (${movie.Year})</h3>
+            <p><strong>Genre:</strong> ${movie.Genre || 'N/A'}</p>
+            <p><strong>Language:</strong> ${movie.Language || 'N/A'}</p>
+            <p>${movie.Plot?.substring(0, 120) + '...' || ''}</p>
+            <div class="movie-actions">
+              <button onclick="showDetails('${movie.imdbID}')">Details</button>
+              <button onclick="addFavorite('${movie.imdbID}', '${movie.Title}')">❤ Favorite</button>
+            </div>
+          </div>
+        `;
+        movieList.appendChild(card);
+      });
+    }
+
+    // Movie details and favorites
+    window.showDetails = async function(imdbID) {
+      const res = await fetch(`https://www.omdbapi.com/?apikey=${API_KEY}&i=${imdbID}&plot=full`);
+      const movie = await res.json();
+      alert(`Title: ${movie.Title}\nYear: ${movie.Year}\nRated: ${movie.Rated}\nReleased: ${movie.Released}\nGenre: ${movie.Genre}\nDirector: ${movie.Director}\nActors: ${movie.Actors}\nPlot: ${movie.Plot}\nIMDB Rating: ${movie.imdbRating}`);
+    };
+
+    window.addFavorite = function(id, title) {
+      const favs = JSON.parse(localStorage.getItem('favorites')) || [];
+      if (!favs.some(f => f.id === id)) {
+        favs.push({ id, title });
+        localStorage.setItem('favorites', JSON.stringify(favs));
+        alert(`Added "${title}" to favorites!`);
+      } else {
+        alert('Already in favorites!');
+      }
+    };
+
+    // Initial load
+    window.onload = () => {
+      searchInput.value = 'Avengers';
+      searchBtn.click();
+    };
+  </script>
+</body>
+</html>
